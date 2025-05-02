@@ -6,6 +6,7 @@ import '../../common_widget/setting_row.dart';
 import '../../common_widget/title_subtitle_cell.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -15,6 +16,70 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+
+
+  Object userData = {};
+  String userName = "";
+  String height = "";
+  String weight = "";
+  String age = "";
+  @override
+  void initState() {
+    super.initState();
+    fetchUserName();
+  }
+
+  Future<void> fetchUserName() async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      if (!mounted) return; // <- Prevents setState after dispose
+      if (userDoc.exists) {
+        final data = userDoc.data();
+        final authUserData = data ?? '';
+        final firstName = data?['first_name'] ?? '';
+        final lastName = data?['last_name'] ?? '';
+        final userHeight = data?['height'] ?? '';
+        final userWeight = data?['weight'] ?? '';
+
+        final dobStr = data?['dob'] ?? '';
+        int userAge = 0;
+
+        if (dobStr.isNotEmpty) {
+          try {
+            final dob = DateTime.parse(dobStr);
+            final today = DateTime.now();
+            userAge = today.year - dob.year;
+            if (today.month < dob.month || (today.month == dob.month && today.day < dob.day)) {
+              userAge--;
+            }
+          } catch (e) {
+            print('Invalid date format for dob: $dobStr');
+          }
+        }
+  
+        // final lastName = data?['last_name'] ?? '';
+        if (mounted) {
+          setState(() {
+            userData = authUserData;
+            userName = '$firstName $lastName'.trim();
+            height = '${userHeight.trim()} cm';
+            weight = '${userWeight.trim()} kg';
+            age = '$userAge yo';
+            print(userData);
+          });
+        }
+      }
+    }
+  } catch (e) {
+    print('Error fetching user name: $e');
+  }
+}
+
   bool positive = false;
 
   List accountArr = [
@@ -97,7 +162,7 @@ class _ProfileViewState extends State<ProfileView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Stefani Wong",
+                          userName.isNotEmpty ? userName : 'Loading...',
                           style: TextStyle(
                             color: TColor.black,
                             fontSize: 14,
@@ -138,29 +203,29 @@ class _ProfileViewState extends State<ProfileView> {
               const SizedBox(
                 height: 15,
               ),
-              const Row(
+              Row(
                 children: [
                   Expanded(
                     child: TitleSubtitleCell(
-                      title: "180cm",
+                      title: height.isNotEmpty ? height : 'Loading...',
                       subtitle: "Height",
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   Expanded(
                     child: TitleSubtitleCell(
-                      title: "65kg",
+                      title: weight.isNotEmpty ? weight : 'Loading...',
                       subtitle: "Weight",
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   Expanded(
                     child: TitleSubtitleCell(
-                      title: "22yo",
+                      title: age.isNotEmpty ? age : 'Loading...',
                       subtitle: "Age",
                     ),
                   ),
