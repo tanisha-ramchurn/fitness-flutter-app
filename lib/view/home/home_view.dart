@@ -9,6 +9,8 @@ import '../../common/colo_extension.dart';
 import 'activity_tracker_view.dart';
 import 'finished_workout_view.dart';
 import 'notification_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -18,6 +20,39 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  String userName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserName();
+  }
+  
+
+  Future<void> fetchUserName() async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      if (!mounted) return; // <- Prevents setState after dispose
+      if (userDoc.exists) {
+        final data = userDoc.data();
+        final firstName = data?['first_name'] ?? '';
+        final lastName = data?['last_name'] ?? '';
+        if (mounted) {
+          setState(() {
+            userName = '$firstName $lastName'.trim();
+          });
+        }
+      }
+    }
+  } catch (e) {
+    print('Error fetching user name: $e');
+  }
+}
   List lastWorkoutArr = [
     {
       "name": "Full Body Workout",
@@ -131,7 +166,7 @@ class _HomeViewState extends State<HomeView> {
                           style: TextStyle(color: TColor.gray, fontSize: 12),
                         ),
                         Text(
-                          "Stefani Wong",
+                          userName.isNotEmpty ? userName : 'Loading...',
                           style: TextStyle(
                               color: TColor.black,
                               fontSize: 20,
