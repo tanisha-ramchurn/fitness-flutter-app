@@ -193,7 +193,7 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                                 List<int> spotIndexes) {
                               return spotIndexes.map((index) {
                                 return TouchedSpotIndicatorData(
-                                  FlLine(
+                                  const FlLine(
                                     color: Colors.transparent,
                                   ),
                                   FlDotData(
@@ -233,8 +233,8 @@ class _MealPlannerViewState extends State<MealPlannerView> {
                           maxY: 110,
                           titlesData: FlTitlesData(
                               show: true,
-                              leftTitles: AxisTitles(),
-                              topTitles: AxisTitles(),
+                              leftTitles: const AxisTitles(),
+                              topTitles: const AxisTitles(),
                               bottomTitles: AxisTitles(
                                 sideTitles: bottomTitles,
                               ),

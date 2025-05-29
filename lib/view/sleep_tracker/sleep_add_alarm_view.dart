@@ -148,7 +148,7 @@ class _SleepAddAlarmViewState extends State<SleepAddAlarmView> {
                     scale: 0.7,
                     child: CustomAnimatedToggleSwitch<bool>(
                       current: positive,
-                      values: [false, true],
+                      values: const [false, true],
                       dif: 0.0,
                       indicatorSize: const Size.square(30.0),
                       animationDuration: const Duration(milliseconds: 200),

@@ -137,7 +137,7 @@ class _SignUpViewState extends State<SignUpView> {
                 onPressed: () async {
                   if (!isCheck) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Please accept the terms to continue.")),
+                      const SnackBar(content: Text("Please accept the terms to continue.")),
                     );
                     return;
                   }

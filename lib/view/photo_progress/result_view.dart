@@ -432,7 +432,7 @@ class _ResultViewState extends State<ResultView> {
                                 List<int> spotIndexes) {
                               return spotIndexes.map((index) {
                                 return TouchedSpotIndicatorData(
-                                  FlLine(
+                                  const FlLine(
                                     color: Colors.transparent,
                                   ),
                                   FlDotData(
@@ -472,8 +472,8 @@ class _ResultViewState extends State<ResultView> {
                           maxY: 110,
                           titlesData: FlTitlesData(
                               show: true,
-                              leftTitles: AxisTitles(),
-                              topTitles: AxisTitles(),
+                              leftTitles: const AxisTitles(),
+                              topTitles: const AxisTitles(),
                               bottomTitles: AxisTitles(
                                 sideTitles: bottomTitles,
                               ),
@@ -623,7 +623,7 @@ class _ResultViewState extends State<ResultView> {
         gradient: LinearGradient(colors: TColor.primaryG),
         barWidth: 3,
         isStrokeCapRound: true,
-        dotData: FlDotData(show: false),
+        dotData: const FlDotData(show: false),
         belowBarData: BarAreaData(show: false),
         spots: const [
           FlSpot(1, 35),
@@ -644,7 +644,7 @@ class _ResultViewState extends State<ResultView> {
         ]),
         barWidth: 2,
         isStrokeCapRound: true,
-        dotData: FlDotData(show: false),
+        dotData: const FlDotData(show: false),
         belowBarData: BarAreaData(
           show: false,
         ),

@@ -54,6 +54,13 @@ dependencies:
   firebase_messaging: ^14.7.4
   flutter_carousel_slider: ^1.1.0
 
+  flutter_local_notifications: ^19.2.1
+  timezone: ^0.10.0
+  fluttertoast: ^8.2.4
+  font_awesome_flutter: ^10.7.0
+  rxdart: ^0.27.7
+  
+
 dependency_overrides: 
   intl: ^0.18.1
 

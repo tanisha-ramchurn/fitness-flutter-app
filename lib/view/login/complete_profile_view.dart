@@ -14,7 +14,7 @@ class CompleteProfileView extends StatefulWidget {
   final String email;
 
   // ✅ Do NOT use `const` here if the values are NOT constant
-  CompleteProfileView({
+  const CompleteProfileView({
     Key? key,
     required this.firstName,
     required this.lastName,
